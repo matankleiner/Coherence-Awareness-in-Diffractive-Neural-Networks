@@ -1,4 +1,4 @@
-# Coherence-Aware-Diffractive-Networks
+# Coherence-Awareness-in-Diffractive-Neural-Networks
 
 ### Official pytorch implementation of the paper: "Coherence Awareness in Diffractive Neural Networks"
 
