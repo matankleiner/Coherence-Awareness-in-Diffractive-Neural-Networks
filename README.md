@@ -62,10 +62,13 @@ Our code is under the MIT License.
 If you use this code for your research, please cite our paper:
 
 ```
-@article{kleiner2024coherence,
-    title={Coherence Awareness in Diffractive Neural Networks},
-    author={Kleiner, Matan and Michaeli, Lior and Michaeli, Tomer},
-    journal={arXiv preprint arXiv:2408.06681},
-    year={2024}
+@article{kleiner2025coherence,
+author = {Kleiner, Matan and Michalei, Lior and Michalei, Tomer},
+title = {Coherence Awareness in Diffractive Neural Networks},
+journal = {Laser \& Photonics Reviews},
+volume = {n/a},
+number = {n/a},
+pages = {2401299},
+doi = {https://doi.org/10.1002/lpor.202401299},
 }
 ```
