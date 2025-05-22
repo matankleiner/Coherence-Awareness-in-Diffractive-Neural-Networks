@@ -66,8 +66,8 @@ If you use this code for your research, please cite our paper:
 author = {Kleiner, Matan and Michalei, Lior and Michalei, Tomer},
 title = {Coherence Awareness in Diffractive Neural Networks},
 journal = {Laser \& Photonics Reviews},
-volume = {n/a},
-number = {n/a},
+volume = {19},
+number = {10},
 pages = {2401299},
 doi = {https://doi.org/10.1002/lpor.202401299},
 }
