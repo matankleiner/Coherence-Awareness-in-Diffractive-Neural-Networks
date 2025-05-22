@@ -69,6 +69,7 @@ journal = {Laser \& Photonics Reviews},
 volume = {19},
 number = {10},
 pages = {2401299},
+year={2025},
 doi = {https://doi.org/10.1002/lpor.202401299},
 }
 ```
