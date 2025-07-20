@@ -3,7 +3,7 @@ import os
 import torch
 import numpy as np 
 from tqdm import tqdm
-from utils import rs_tf_kernel, patches_intensity
+from utils import rs_tf_kernel, patches_intensity, wavelengths_intensities
 from layers import FreeSpaceProp, NonlinearLayer
 from config import PIXEL_SIZE
 
@@ -31,7 +31,7 @@ def training(
         optimizer.zero_grad()
         epoch_time = time.time()
 
-        wavelengths_intensities, wavelengths = wavelengths_intensities(args.base_wavelength,
+        wavelengths_intensities_, wavelengths = wavelengths_intensities(args.base_wavelength,
                                                                     args.num_wavelengths,
                                                                     args.sigma,
                                                                     args.alpha)
@@ -53,7 +53,7 @@ def training(
             intensity = torch.zeros((inputs.shape[0], SHAPE, SHAPE), device=device)
             partial_input = torch.zeros((inputs.shape[0], ii.shape[0], inputs.shape[2], inputs.shape[3]), dtype=torch.cfloat, device=device)
             
-            for kernel, led_kernel, wavelength, wavelength_intensity in zip(KERNELS, LED_KERNELS, wavelengths, wavelengths_intensities):
+            for kernel, led_kernel, wavelength, wavelength_intensity in zip(KERNELS, LED_KERNELS, wavelengths, wavelengths_intensities_):
                 free_space_led = FreeSpaceProp(led_kernel)
                 free_space_prop = FreeSpaceProp(kernel)
                 # creating a channel from each pixel of the light source
@@ -101,7 +101,7 @@ def training(
             torch.save(state, f'./trials/{args.trial_name}/checkpoints/ckpt{epoch}.pth')
 
         if epoch % 10 == 0 or epoch == args.epochs:
-            test_accuracy = accuracy(models, KERNELS, LED_KERNELS, wavelengths, wavelengths_intensities, led, SHAPE, test_loader, device)
+            test_accuracy = accuracy(models, KERNELS, LED_KERNELS, wavelengths, wavelengths_intensities_, led, SHAPE, test_loader, device)
             print(f"Test Acc: {test_accuracy:.4f}%")
 
 
@@ -110,7 +110,7 @@ def accuracy(
     kernels,
     led_kernels,
     wavelengths,
-    wavelengths_intensities,
+    wavelengths_intensities_,
     led,
     shape,
     test_loader,
@@ -133,7 +133,7 @@ def accuracy(
             intensity = torch.zeros((inputs.shape[0], shape, shape), device=device)
             partial_input = torch.zeros((inputs.shape[0], ii.shape[0], inputs.shape[2], inputs.shape[3]), dtype=torch.cfloat, device=device)
             
-            for kernel, led_kernel, wavelength, wavelength_intensity in zip(kernels, led_kernels, wavelengths, wavelengths_intensities):
+            for kernel, led_kernel, wavelength, wavelength_intensity in zip(kernels, led_kernels, wavelengths, wavelengths_intensities_):
                 free_space_led = FreeSpaceProp(led_kernel)
                 free_space_prop = FreeSpaceProp(kernel)
                 # creating a channel from each pixel of the light source
@@ -191,7 +191,7 @@ def all_accuracy(
             inputs = all_inputs[i].unsqueeze(0)
             labels = all_labels[i].unsqueeze(0)
 
-            wavelengths_intensities, wavelengths = wavelengths_intensities(args.base_wavelength,
+            wavelengths_intensities_, wavelengths = wavelengths_intensities(args.base_wavelength,
                                                                         num_wavelengths,
                                                                         sigma,
                                                                         alpha=0.1)
@@ -209,7 +209,7 @@ def all_accuracy(
          
             intensity = torch.zeros((inputs.shape[0], shape, shape), device=device)
             
-            for kernel, led_kernel, wavelength, wavelength_intensity in zip(KERNELS, LED_KERNELS, wavelengths, wavelengths_intensities):
+            for kernel, led_kernel, wavelength, wavelength_intensity in zip(KERNELS, LED_KERNELS, wavelengths, wavelengths_intensities_):
                 free_space_led = FreeSpaceProp(led_kernel)
                 free_space_prop = FreeSpaceProp(kernel)
                 # creating a channel from each pixel of the light source
